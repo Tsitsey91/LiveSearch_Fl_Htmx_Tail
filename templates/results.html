@@ -1,0 +1,63 @@
+<table class="min-w-full bg-white">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in results %}
+        <tr>
+            <td class="border px-4 py-2">{{ item.id }}</td>
+            <td class="border px-4 py-2">{{ item.name }}</td>
+            <td class="border px-4 py-2">{{ item.description }}</td>
+        </tr>
+        {% endfor %}
+        {% if not results %}
+        <tr>
+            <td colspan="3" class="text-center p-4">No results found.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<div class="mt-4 flex justify-center space-x-2">
+    {% if page > 1 %}
+    <button
+        hx-get="/search?query={{ query }}&page=1"
+        hx-target="#results"
+        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+    >
+        First
+    </button>
+
+    <button
+        hx-get="/search?query={{ query }}&page={{ page - 1 }}"
+        hx-target="#results"
+        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+    >
+        {{ page - 1 }}
+    </button>
+    {% endif %}
+    
+    <span class="px-4 py-2 bg-blue-500 text-white rounded">{{ page }}</span>
+    
+    {% if page < total_pages %}
+    <button
+        hx-get="/search?query={{ query }}&page={{ page + 1 }}"
+        hx-target="#results"
+        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+    >
+        {{ page + 1 }}
+    </button>
+
+    <button
+        hx-get="/search?query={{ query }}&page={{ total_pages }}"
+        hx-target="#results"
+        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+    >
+        Last
+    </button>
+    {% endif %}
+</div>
